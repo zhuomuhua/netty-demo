@@ -2,6 +2,7 @@ package com.zhl.netty.demo.chat;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -32,14 +33,23 @@ public class ChatServer {
             serverBootstrap.group(bossGroup, workerGroup);
             serverBootstrap.option(ChannelOption.SO_BACKLOG, 1024);
             serverBootstrap.option(ChannelOption.SO_KEEPALIVE, Boolean.TRUE);
+            //添加日志处理
             serverBootstrap.handler(new LoggingHandler(LogLevel.INFO));
             serverBootstrap.channel(NioServerSocketChannel.class);
             serverBootstrap.childHandler(new ChatServerInitializer());
 
             ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
-            if (channelFuture.isSuccess()) {
-                log.info("【IM】启动成功......");
-            }
+            channelFuture.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    boolean success = channelFuture.isSuccess();
+                    if (success) {
+                        log.info("【IM】启动成功......");
+                    } else {
+                        log.warn("绑定端口-->失败");
+                    }
+                }
+            });
             channelFuture.channel().closeFuture().sync();
         } catch (Exception e) {
             log.error(e.getMessage(), e);

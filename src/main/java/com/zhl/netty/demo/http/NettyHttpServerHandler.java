@@ -19,10 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 public class NettyHttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
-        ctx.channel();
-        ctx.pipeline();
-        ctx.pipeline().channel();
-        ctx.handler();
         if (msg instanceof HttpRequest) {
             ByteBuf content = Unpooled.copiedBuffer("hello, 我是小爱!".getBytes());
             DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
