@@ -45,7 +45,7 @@ public class HeartServer {
                             IdleStateEvent(读空闲、写空闲、读写空闲)
                      */
                     pipeline.addLast(new IdleStateHandler(3, 5, 7, TimeUnit.SECONDS));
-                    pipeline.addLast(null);
+                    pipeline.addLast(new HeartHandler());
                 }
             });
             ChannelFuture channelFuture = serverBootstrap.bind(9000).sync();
