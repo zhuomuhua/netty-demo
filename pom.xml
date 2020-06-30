@@ -74,6 +74,12 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.29.Final</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-bom</artifactId>
+            <version>3.7.1</version>
+        </dependency>
     </dependencies>
 
     <build>
